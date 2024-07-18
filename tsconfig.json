@@ -5,7 +5,7 @@
     "target": "es6",
     "noImplicitAny": true,
     "moduleResolution": "node",
-    "sourceMap": false,
+    "sourceMap": true,
     "outDir": "dist",
     "baseUrl": ".",
     "rootDir": "src",
@@ -14,14 +14,22 @@
     "paths": {
       "*": [
         "node_modules/*",
+        "src/*",
         "src/interfaces/*"
       ]
     },
     "lib": [
       "es2015", "es5", "es6", "dom"
-    ]
+    ],
+    "resolveJsonModule": true,
+    "types": ["node"]
   },
   "include": [
-    "src/**/*"
+    "src/**/*",
+    "src/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
   ]
 }

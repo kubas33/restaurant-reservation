@@ -2,13 +2,8 @@ import httpStatusCodes from 'http-status-codes';
 
 // Interfaces
 import IController from '../../interfaces/IController';
-import {
-  ICreateUser,
-  ILoginUser,
-  IUpdateUser,
-  IUserQueryParams,
-} from '../../interfaces/user.interface';
-import { IDeleteById, IDetailById } from '../../interfaces/common.interface';
+import { ICreateUser, ILoginUser, IUpdateUser, IUserQueryParams } from 'user.interface';
+import { IDeleteById, IDetailById } from 'common.interface';
 
 // Errors
 import { StringError } from '../../errors/string.error';
@@ -29,8 +24,7 @@ const create: IController = async (req, res) => {
     const params: ICreateUser = {
       email: req.body.email,
       password: req.body.password,
-      firstName: req.body.firstName,
-      lastName: req.body.lastName,
+      name: req.body.name,
     }
     const user = await userService.create(params);
     return ApiResponse.result(res, user, httpStatusCodes.CREATED);
@@ -79,8 +73,7 @@ const detail: IController = async (req, res) => {
 const update: IController = async (req, res) => {
   try {
     const params: IUpdateUser = {
-      firstName: req.body.firstName,
-      lastName: req.body.lastName,
+      name: req.body.name,
       id: parseInt(req.params.id, 10),
     }
     await userService.update(params);
@@ -93,8 +86,7 @@ const update: IController = async (req, res) => {
 const updateMe: IController = async (req, res) => {
   try {
     const params: IUpdateUser = {
-      firstName: req.body.firstName,
-      lastName: req.body.lastName,
+      name: req.body.name,
       id: req.user.id,
     }
     await userService.update(params);

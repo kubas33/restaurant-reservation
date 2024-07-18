@@ -1,9 +1,9 @@
-import { Column, Entity, PrimaryGeneratedColumn, Unique, OneToMany } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn, Unique } from 'typeorm';
 
 // Entities
 import { BaseEntity } from '../base/base.entity';
 
-@Entity('user', { orderBy: { id: 'DESC' } })
+@Entity('users', { orderBy: { id: 'DESC' } })
 export class User extends BaseEntity {
 
   @PrimaryGeneratedColumn({ type: 'int' })
@@ -17,10 +17,7 @@ export class User extends BaseEntity {
   password: string;
 
   @Column({ length: 255, nullable: false })
-  firstName: string;
-
-  @Column({ length: 255, nullable: false })
-  lastName: string;
+  name: string;
 
   @Column({ default: false })
   isDeleted: boolean;

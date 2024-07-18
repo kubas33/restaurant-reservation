@@ -1,64 +1,55 @@
 import bcrypt from 'bcrypt';
+import { ICreateUser } from 'user.interface';
 
-export const userSeed = [
+export const userSeed : ICreateUser[] = [
   {
     email: 'admin@gmail.com',
     password: bcrypt.hashSync('password', 10),
-    firstName: 'Administrator',
-    lastName: '',
+    name: 'Administrator',
   },
   {
     email: 'matteo@gmail.com',
     password: bcrypt.hashSync('password', 10),
-    firstName: 'Matteo',
-    lastName: 'Gleichner',
+    name: 'Matteo',
   },
   {
     email: 'titus@gmail.com',
     password: bcrypt.hashSync('password', 10),
-    firstName: 'Titus',
-    lastName: 'Marvin',
+    name: 'Titus',
   },
   {
     email: 'diamond@gmail.com',
     password: bcrypt.hashSync('password', 10),
-    firstName: 'Diamond',
-    lastName: 'Beahan',
+    name: 'Diamond',
   },
   {
     email: 'ivy@gmail.com',
     password: bcrypt.hashSync('password', 10),
-    firstName: 'Ivy',
-    lastName: 'Homenick',
+    name: 'Ivy',
   },
   {
     email: 'diana@gmail.com',
     password: bcrypt.hashSync('password', 10),
-    firstName: 'Dianna',
-    lastName: 'McLaughlin',
+    name: 'Dianna',
   },
   {
     email: 'gwen@gmail.com',
     password: bcrypt.hashSync('password', 10),
-    firstName: 'Gwen',
-    lastName: 'McKenzie',
+    name: 'Gwen',
   },
   {
     email: 'emmalee@gmail.com',
     password: bcrypt.hashSync('password', 10),
-    firstName: 'Emmalee',
-    lastName: 'Braun',
+    name: 'Emmalee',
   },
   {
     email: 'angeline@gmail.com',
     password: bcrypt.hashSync('password', 10),
-    firstName: 'Angeline',
-    lastName: 'Hyatt',
+    name: 'Angeline',
   },
   {
     email: 'josephine@gmail.com',
     password: bcrypt.hashSync('password', 10),
-    firstName: 'Josephine',
-    lastName: 'Mann',
+    name: 'Josephine',
   },
 ];

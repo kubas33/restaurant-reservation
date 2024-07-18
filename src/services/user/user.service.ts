@@ -9,13 +9,8 @@ import ApiUtility from '../../utilities/api.utility';
 import DateTimeUtility from '../../utilities/date-time.utility';
 
 // Interfaces
-import {
-  ICreateUser,
-  ILoginUser,
-  IUpdateUser,
-  IUserQueryParams,
-} from '../../interfaces/user.interface';
-import { IDeleteById, IDetailById } from '../../interfaces/common.interface';
+import { ICreateUser, ILoginUser, IUpdateUser, IUserQueryParams } from 'user.interface';
+import { IDeleteById, IDetailById } from 'common.interface';
 
 // Errors
 import { StringError } from '../../errors/string.error';
@@ -26,8 +21,7 @@ const create = async (params: ICreateUser) => {
   const item = new User();
   item.email = params.email;
   item.password = await Encryption.generateHash(params.password, 10);
-  item.firstName = params.firstName;
-  item.lastName = params.lastName;
+  item.name = params.name;
   const userData = await getRepository(User).save(item);
   return ApiUtility.sanitizeUser(userData);
 };
@@ -42,21 +36,20 @@ const login = async (params: ILoginUser) => {
       'user.id',
       'user.email',
       'user.password',
-      'user.firstName',
-      'user.lastName',
+      'user.name',
       'user.isDeleted',
     ])
     .getOne();
 
   if (!user) {
-    throw new StringError('Your email has not been registered');
+    throw new StringError('Brak użytkownika z takim emailem');
   }
 
   if (await Encryption.verifyHash(params.password, user.password)) {
     return ApiUtility.sanitizeUser(user);
   }
 
-  throw new StringError('Your password is not correct');
+  throw new StringError('Hasło nie poprawne');
 };
 
 const getById = async (params: IDetailById) => {
@@ -75,7 +68,7 @@ const detail = async (params: IDetailById) => {
 
   const user = await getRepository(User).findOne(query);
   if (!user) {
-    throw new StringError('User is not existed');
+    throw new StringError('Brak użytkownika');
   }
 
   return ApiUtility.sanitizeUser(user);
@@ -86,12 +79,11 @@ const update = async (params: IUpdateUser) => {
 
   const user = await getRepository(User).findOne(query);
   if (!user) {
-    throw new StringError('User is not existed');
+    throw new StringError('Brak użytkownika');
   }
 
   return await getRepository(User).update(query, {
-    firstName: params.firstName,
-    lastName: params.lastName,
+    name: params.name,
     updatedAt: DateTimeUtility.getCurrentTimeStamp(),
   });
 }
@@ -102,7 +94,7 @@ const list = async (params: IUserQueryParams) => {
 
   if (params.keyword) {
     userRepo = userRepo.andWhere(
-      '(LOWER(user.firstName) LIKE LOWER(:keyword) OR LOWER(user.lastName) LIKE LOWER(:keyword))',
+      '(LOWER(user.name) LIKE LOWER(:keyword)',
       { keyword: `%${params.keyword}%` },
     );
   }
@@ -129,7 +121,7 @@ const remove = async (params: IDeleteById) => {
 
   const user = await getRepository(User).findOne(query);
   if (!user) {
-    throw new StringError('User is not existed');
+    throw new StringError('Brak użytkownika');
   }
 
   return await getRepository(User).update(query, {
