@@ -1,6 +1,7 @@
 import constants from '../constants';
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+
 
 export default class Encryption {
   static async generateHash(password: string, saltRounds: number): Promise<string> {
@@ -28,7 +29,7 @@ export default class Encryption {
   static async generateCookie(key: string, value: string) {
     const data: { [key: string]: string } = {};
     data[key] = value;
-    return await jwt.sign({ data }, constants.APPLICATION.env.authSecret, {
+    return jwt.sign({ data }, constants.APPLICATION.env.authSecret, {
       expiresIn: constants.APPLICATION.timers.userCookieExpiry,
     });
   };

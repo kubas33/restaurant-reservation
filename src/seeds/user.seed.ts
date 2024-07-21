@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt';
-import { ICreateUser } from 'user.interface';
+import { ICreateUser } from 'interfaces/user.interface';
 
 export const userSeed : ICreateUser[] = [
   {

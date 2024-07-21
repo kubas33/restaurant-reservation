@@ -1,6 +1,10 @@
 import { DataSource } from 'typeorm';
+import * as dotenv from 'dotenv';
 
-const myDataSource = new DataSource( {
+dotenv.config();
+
+
+export const AppDataSource = new DataSource( {
   type: 'mysql',
   host: process.env.DB_HOST || '127.0.0.1',
   username: process.env.DB_USER || 'root',
@@ -8,7 +12,7 @@ const myDataSource = new DataSource( {
   database: process.env.DB_NAME || 'restaurant_dev',
   port: process.env.DB_PORT ? parseInt(process.env.DB_PORT) : 3306,
   charset: 'utf8mb4',
-  synchronize: false,
+  synchronize: true,
   entities: process.env.NODE_ENV !== 'production' ? ['**/**.entity.ts'] : ['dist/**/*.entity.js'],
   logging: true,
   migrations: ['src/migrations/*.ts'],
@@ -16,5 +20,4 @@ const myDataSource = new DataSource( {
   acquireTimeout: 30000
 });
 
-export default myDataSource;
 

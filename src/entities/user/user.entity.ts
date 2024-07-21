@@ -1,7 +1,8 @@
-import { Column, Entity, PrimaryGeneratedColumn, Unique } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn, Unique } from 'typeorm';
 
 // Entities
 import { BaseEntity } from '../base/base.entity';
+import { Reservation } from 'entities/restaurant/reservation.entity';
 
 @Entity('users', { orderBy: { id: 'DESC' } })
 export class User extends BaseEntity {
@@ -9,22 +10,17 @@ export class User extends BaseEntity {
   @PrimaryGeneratedColumn({ type: 'int' })
   id: number;
 
-  @Column({ length: 100, nullable: false })
+  @Column({type: 'varchar', length: 100, nullable: false })
   @Unique(['email'])
   email: string;
 
-  @Column({ length: 100, nullable: false, select: false })
+  @Column({type: 'varchar', length: 100, nullable: false, select: false })
   password: string;
 
-  @Column({ length: 255, nullable: false })
+  @Column({type: 'varchar', length: 255, nullable: false })
   name: string;
 
-  @Column({ default: false })
-  isDeleted: boolean;
-
-  toJSON() {
-    delete this.isDeleted;
-    return this;
-  }
+  @OneToMany(() => Reservation, (reservation) => reservation.user)
+  reservations: Reservation[];
 
 }

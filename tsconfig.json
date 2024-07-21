@@ -1,21 +1,28 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
+    "target": "ES6",
+    "module": "ESNext",
     "esModuleInterop": true,
-    "target": "es6",
     "noImplicitAny": true,
-    "moduleResolution": "node",
     "sourceMap": true,
     "outDir": "dist",
     "baseUrl": ".",
     "rootDir": "src",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
+    "downlevelIteration": true,
     "paths": {
+      "entities/*": ["src/entities/*"],
+      "utilities/*": ["src/utilities/*"],
+      "interfaces/*": ["src/interfaces/*"],
+      "errors/*": ["src/errors/*"],
+      "services/*": ["src/services/*"],
+      "middlewares/*": ["src/middlewares/*"],
+      "configs/*": ["src/configs/*"],
       "*": [
         "node_modules/*",
         "src/*",
-        "src/interfaces/*"
+        "*"
       ]
     },
     "lib": [
@@ -25,8 +32,11 @@
     "types": ["node"]
   },
   "include": [
-    "src/**/*",
-    "src/*"
+    "src/**/*.ts",
+    "src/*",
+    "src/configs/app-data-source.ts",
+    "./index.ts",
+    "*"
   ],
   "exclude": [
     "node_modules",

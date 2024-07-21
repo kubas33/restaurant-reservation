@@ -1,7 +1,7 @@
 import { getRepository } from 'typeorm';
 
 // Entities
-import { User } from '../../entities/user/user.entity';
+import { User } from 'entities/user/user.entity';
 
 // Utilities
 import Encryption from '../../utilities/encryption.utility';
@@ -9,11 +9,12 @@ import ApiUtility from '../../utilities/api.utility';
 import DateTimeUtility from '../../utilities/date-time.utility';
 
 // Interfaces
-import { ICreateUser, ILoginUser, IUpdateUser, IUserQueryParams } from 'user.interface';
-import { IDeleteById, IDetailById } from 'common.interface';
+import { ICreateUser, ILoginUser, IUpdateUser, IUserQueryParams } from 'interfaces/user.interface';
+import { IDeleteById, IDetailById } from 'interfaces/common.interface';
 
 // Errors
-import { StringError } from '../../errors/string.error';
+import { StringError } from 'errors/string.error';
+
 
 const where = { isDeleted: false };
 
@@ -54,7 +55,9 @@ const login = async (params: ILoginUser) => {
 
 const getById = async (params: IDetailById) => {
   try {
-    const data = await getRepository(User).findOne({ id: params.id });
+    const data = await getRepository(User).findOne({
+      where: { id: params.id }
+    });
     return ApiUtility.sanitizeUser(data);
   } catch (e) {
     return null;
@@ -77,7 +80,7 @@ const detail = async (params: IDetailById) => {
 const update = async (params: IUpdateUser) => {
   const query = { ...where, id: params.id };
 
-  const user = await getRepository(User).findOne(query);
+  const user = await getRepository(User).findOne({ where: query });
   if (!user) {
     throw new StringError('Brak użytkownika');
   }
@@ -119,7 +122,7 @@ const list = async (params: IUserQueryParams) => {
 const remove = async (params: IDeleteById) => {
   const query = { ...where, id: params.id };
 
-  const user = await getRepository(User).findOne(query);
+  const user = await getRepository(User).findOne({ where: query });
   if (!user) {
     throw new StringError('Brak użytkownika');
   }

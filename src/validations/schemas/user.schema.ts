@@ -1,24 +1,18 @@
-import joi from 'joi';
+import { body } from 'express-validator';
 
-export default {
-  register: {
-    body: {
-      email: joi.string().email().required(),
-      password: joi.string().min(6).max(30).required(),
-      firstName: joi.string().min(3).max(100).required(),
-      lastName: joi.string().min(3).max(100).required(),
-    },
-  },
-  login: {
-    body: {
-      email: joi.string().email().required(),
-      password: joi.string().required(),
-    },
-  },
-  updateMe: {
-    body: {
-      firstName: joi.string().min(3).max(100).required(),
-      lastName: joi.string().min(3).max(100).required(),
-    },
-  },
-};
+export const registerValidation = [
+  body('email').isEmail().withMessage('Invalid email').notEmpty().withMessage('Email is required'),
+  body('password').isLength({ min: 6, max: 30 }).withMessage('Password must be between 6 and 30 characters').notEmpty().withMessage('Password is required'),
+  body('firstName').isLength({ min: 3, max: 100 }).withMessage('First name must be between 3 and 100 characters').notEmpty().withMessage('First name is required'),
+  body('lastName').isLength({ min: 3, max: 100 }).withMessage('Last name must be between 3 and 100 characters').notEmpty().withMessage('Last name is required'),
+];
+
+export const loginValidation = [
+  body('email').isEmail().withMessage('Invalid email').notEmpty().withMessage('Email is required'),
+  body('password').notEmpty().withMessage('Password is required'),
+];
+
+export const updateMeValidation = [
+  body('firstName').isLength({ min: 3, max: 100 }).withMessage('First name must be between 3 and 100 characters').notEmpty().withMessage('First name is required'),
+  body('lastName').isLength({ min: 3, max: 100 }).withMessage('Last name must be between 3 and 100 characters').notEmpty().withMessage('Last name is required'),
+];

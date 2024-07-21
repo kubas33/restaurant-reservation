@@ -2,11 +2,11 @@ import httpStatusCodes from 'http-status-codes';
 
 // Interfaces
 import IController from '../../interfaces/IController';
-import { ICreateUser, ILoginUser, IUpdateUser, IUserQueryParams } from 'user.interface';
-import { IDeleteById, IDetailById } from 'common.interface';
+import { ICreateUser, ILoginUser, IUpdateUser, IUserQueryParams } from 'interfaces/user.interface';
+import { IDeleteById, IDetailById } from 'interfaces/common.interface';
 
 // Errors
-import { StringError } from '../../errors/string.error';
+import { StringError } from 'errors/string.error';
 
 // Services
 import userService from '../../services/user/user.service';
