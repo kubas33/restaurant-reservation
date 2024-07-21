@@ -47,14 +47,14 @@ const login = async (params: ILoginUser) => {
     .getOne();
 
   if (!user) {
-    throw new StringError('Brak użytkownika z takim emailem');
+    throw new StringError('User not found');
   }
 
   if (await Encryption.verifyHash(params.password, user.password)) {
     return ApiUtility.sanitizeUser(user);
   }
 
-  throw new StringError('Hasło nie poprawne');
+  throw new StringError('Password incorrect');
 };
 
 const getById = async (params: IDetailById) => {
@@ -75,7 +75,7 @@ const detail = async (params: IDetailById) => {
 
   const user = await AppDataSource.getRepository(User).findOne(query);
   if (!user) {
-    throw new StringError('Brak użytkownika');
+    throw new StringError('User not found');
   }
 
   return ApiUtility.sanitizeUser(user);
@@ -86,7 +86,7 @@ const update = async (params: IUpdateUser) => {
 
   const user = await AppDataSource.getRepository(User).findOne({ where: query });
   if (!user) {
-    throw new StringError('Brak użytkownika');
+    throw new StringError('User not found');
   }
 
   return await AppDataSource.getRepository(User).update(query, {
@@ -128,12 +128,12 @@ const remove = async (params: IDeleteById) => {
 
   const user = await AppDataSource.getRepository(User).findOne({ where: query });
   if (!user) {
-    throw new StringError('Brak użytkownika');
+    throw new StringError('User not found');
   }
 
   return await AppDataSource.getRepository(User).update(query, {
     isDeleted: true,
-    updatedAt: DateTimeUtility.getCurrentTimeStamp(),
+    deletedAt: DateTimeUtility.getCurrentTimeStamp(),
   });
 }
 
