@@ -32,4 +32,9 @@ router.post(
   userController.login,
 );
 
+router.post(
+  '/logout',
+  userController.logout,
+);
+
 export default router;

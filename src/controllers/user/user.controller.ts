@@ -53,6 +53,11 @@ const login: IController = async (req, res) => {
   }
 };
 
+const logout: IController = async (req, res) => {
+  res.clearCookie(constants.COOKIE.COOKIE_USER);
+  return ApiResponse.result(res, null, httpStatusCodes.OK);
+};
+
 const me: IController = async (req, res) => {
   const cookie = await generateUserCookie(req.user.id);
   return ApiResponse.result(res, req.user, httpStatusCodes.OK, cookie);
@@ -131,6 +136,7 @@ const generateUserCookie = async (userId: number) => {
 export default {
   create,
   login,
+  logout,
   me,
   detail,
   update,
