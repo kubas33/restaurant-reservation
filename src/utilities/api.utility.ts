@@ -7,6 +7,7 @@ import { Restaurant } from 'entities/restaurant/restaurant.entity';
 
 // Interfaces
 import { IPagination } from 'interfaces/common.interface';
+import { Table } from 'entities/restaurant/table.entity';
 
 export default class ApiUtility {
   static getCookieFromRequest(req: Request, key: string) {
@@ -29,7 +30,7 @@ export default class ApiUtility {
   }
 
   static sanitizeData(data: BaseEntity) {
-    const { createdAt, updatedAt, ...basicData } = data;
+    const { createdAt, updatedAt, isDeleted, deletedAt, ...basicData } = data;
     return basicData;
   }
 
@@ -41,6 +42,33 @@ export default class ApiUtility {
   static sanitizeRestaurant(restaurant: Restaurant) {
     const { isDeleted, deletedAt, ...basicRestaurant } = restaurant;
     return basicRestaurant;
+  }
+
+  static sanitizeTable(table: Table) {
+    // Sanityzacja podstawowych danych stolika
+    const sanitizedData = this.sanitizeData(table);
+
+    // Destrukturyzacja sanitizedData, aby usunąć pole 'restaurant'
+    const { restaurant, ...basicTable } = sanitizedData;
+
+    // Sanityzacja powiązanej restauracji, jeśli istnieje
+    let sanitizedRestaurant = null;
+    if (restaurant) {
+      const { createdAt, updatedAt, ...basicRestaurant } = restaurant;
+      sanitizedRestaurant = {
+        id: basicRestaurant.id,
+        name: basicRestaurant.name,
+        address: basicRestaurant.address,
+        phone: basicRestaurant.phone,
+        cuisine: basicRestaurant.cuisine,
+      };
+    }
+
+    // Zwracanie zsanityzowanych danych stolika z zasanityzowaną restauracją
+    return {
+      ...basicTable,
+      restaurant: sanitizedRestaurant,
+    };
   }
 
   static getQueryParam(req: any, type: string) {
