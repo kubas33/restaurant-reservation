@@ -1,6 +1,6 @@
 import { body } from 'express-validator';
 
-export const createValidation = [
+export const restaurantCreateValidation = [
 	body('name').isLength({ min: 3, max: 100 })
 		.withMessage('Name must be between 3 and 100 characters').notEmpty().withMessage('Name is required'),
 	body('address').optional()
@@ -11,7 +11,7 @@ export const createValidation = [
 		.isLength({ min: 3, max: 100 }).withMessage('Cuisine must be between 3 and 100 characters'),
 ];
 
-export const updateValidation = [
+export const restaurantUpdateValidation = [
 	body('name').optional()
 		.isLength({ min: 3, max: 100 }).withMessage('Name must be between 3 and 100 characters'),
 	body('address').optional()
