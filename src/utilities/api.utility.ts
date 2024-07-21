@@ -1,11 +1,12 @@
 import { Request } from 'express';
 
 // Entities
-import { User } from '../entities/user/user.entity';
-import { BaseEntity } from '../entities/base/base.entity';
+import { User } from 'entities/user/user.entity';
+import { BaseEntity } from 'entities/base/base.entity';
+import { Restaurant } from 'entities/restaurant/restaurant.entity';
 
 // Interfaces
-import { IPagination } from '../interfaces/common.interface';
+import { IPagination } from 'interfaces/common.interface';
 
 export default class ApiUtility {
   static getCookieFromRequest(req: Request, key: string) {
@@ -33,8 +34,13 @@ export default class ApiUtility {
   }
 
   static sanitizeUser(user: User) {
-    const { password, isDeleted, ...basicUser } = user;
+    const { password, isDeleted, deletedAt, ...basicUser } = user;
     return basicUser;
+  }
+
+  static sanitizeRestaurant(restaurant: Restaurant) {
+    const { isDeleted, deletedAt, ...basicRestaurant } = restaurant;
+    return basicRestaurant;
   }
 
   static getQueryParam(req: any, type: string) {
