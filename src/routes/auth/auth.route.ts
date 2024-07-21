@@ -1,23 +1,34 @@
-import express from 'express';
-const schemaValidator = require('express-joi-validator');
+import express, { NextFunction, Request, Response } from 'express';
+import { validationResult } from 'express-validator';
 
 // Controller
 import userController from '../../controllers/user/user.controller';
 
 // Schema
-import userSchema from '../../validations/schemas/user.schema';
+import { loginValidation, registerValidation } from 'validations/schemas/user.schema';
+
 
 const router = express.Router();
 
+const validate = (req: Request, res: Response, next: NextFunction) => {
+	const errors = validationResult(req);
+	if (!errors.isEmpty()) {
+		return res.status(400).json({ errors: errors.array() });
+	}
+	next();
+};
+
 router.post(
   '/register',
-  schemaValidator(userSchema.register),
+  registerValidation,
+  validate,
   userController.create,
 );
 
 router.post(
   '/login',
-  schemaValidator(userSchema.login),
+  loginValidation,
+  validate,
   userController.login,
 );
 
