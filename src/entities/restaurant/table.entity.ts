@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { BaseEntity } from 'entities/base/base.entity';
 import { Restaurant } from 'entities/restaurant/restaurant.entity';
 import { Reservation } from 'entities/restaurant/reservation.entity';
@@ -18,6 +18,7 @@ export class Table extends BaseEntity{
 	@ManyToOne(() => Restaurant, (restaurant) => restaurant.tables, {
 		onDelete: 'CASCADE',
 	})
+	@JoinColumn()
 	restaurant: Restaurant;
 
 	@OneToMany(() => Reservation, (reservation) => reservation.table, {

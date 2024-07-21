@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { BaseEntity } from 'entities/base/base.entity';
 import { User } from 'entities/user/user.entity';
 import { Table } from 'entities/restaurant/table.entity';
@@ -19,9 +19,11 @@ export class Reservation extends BaseEntity{
 	numberOfGuests: number;
 
 	@ManyToOne(() => User, { eager: true })
+	@JoinColumn()
 	user: User;
 
 	@ManyToOne(() => Table, { eager: true })
+	@JoinColumn()
 	table: Table;
 
 	@Column({ type: 'text', nullable: true })
