@@ -1,4 +1,4 @@
-import { getRepository } from 'typeorm';
+import { AppDataSource } from 'configs/app-data-source';
 
 // Entities
 import { User } from 'entities/user/user.entity';
@@ -19,16 +19,20 @@ import { StringError } from 'errors/string.error';
 const where = { isDeleted: false };
 
 const create = async (params: ICreateUser) => {
-  const item = new User();
-  item.email = params.email;
-  item.password = await Encryption.generateHash(params.password, 10);
-  item.name = params.name;
-  const userData = await getRepository(User).save(item);
+  const user = AppDataSource.getRepository(User).create({
+    email: params.email,
+    password: await Encryption.generateHash(params.password, 10),
+    name: params.name,
+    isDeleted: false,
+    createdAt: DateTimeUtility.getCurrentTimeStamp(),
+    updatedAt: DateTimeUtility.getCurrentTimeStamp(),
+  })
+  const userData = await AppDataSource.getRepository(User).save(user);
   return ApiUtility.sanitizeUser(userData);
 };
 
 const login = async (params: ILoginUser) => {
-  const user = await getRepository(User)
+  const user = await AppDataSource.getRepository(User)
     .createQueryBuilder('user')
     .where('user.email = :email', { email: params.email })
     .select([
@@ -55,7 +59,7 @@ const login = async (params: ILoginUser) => {
 
 const getById = async (params: IDetailById) => {
   try {
-    const data = await getRepository(User).findOne({
+    const data = await AppDataSource.getRepository(User).findOne({
       where: { id: params.id }
     });
     return ApiUtility.sanitizeUser(data);
@@ -69,7 +73,7 @@ const detail = async (params: IDetailById) => {
     where: { ...where, id: params.id },
   }
 
-  const user = await getRepository(User).findOne(query);
+  const user = await AppDataSource.getRepository(User).findOne(query);
   if (!user) {
     throw new StringError('Brak użytkownika');
   }
@@ -80,19 +84,19 @@ const detail = async (params: IDetailById) => {
 const update = async (params: IUpdateUser) => {
   const query = { ...where, id: params.id };
 
-  const user = await getRepository(User).findOne({ where: query });
+  const user = await AppDataSource.getRepository(User).findOne({ where: query });
   if (!user) {
     throw new StringError('Brak użytkownika');
   }
 
-  return await getRepository(User).update(query, {
+  return await AppDataSource.getRepository(User).update(query, {
     name: params.name,
     updatedAt: DateTimeUtility.getCurrentTimeStamp(),
   });
 }
 
 const list = async (params: IUserQueryParams) => {
-  let userRepo = getRepository(User).createQueryBuilder('user');
+  let userRepo = AppDataSource.getRepository(User).createQueryBuilder('user');
   userRepo = userRepo.where('user.isDeleted = :isDeleted', { isDeleted: false });
 
   if (params.keyword) {
@@ -122,12 +126,12 @@ const list = async (params: IUserQueryParams) => {
 const remove = async (params: IDeleteById) => {
   const query = { ...where, id: params.id };
 
-  const user = await getRepository(User).findOne({ where: query });
+  const user = await AppDataSource.getRepository(User).findOne({ where: query });
   if (!user) {
     throw new StringError('Brak użytkownika');
   }
 
-  return await getRepository(User).update(query, {
+  return await AppDataSource.getRepository(User).update(query, {
     isDeleted: true,
     updatedAt: DateTimeUtility.getCurrentTimeStamp(),
   });

@@ -1,8 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import morgan from 'morgan';
-
-import authenticate from '../middlewares/authenticate.middleware';
+import authenticate from 'middlewares/authenticate.middleware';
 import constants from '../constants';
 import indexRoute from '../routes/index.route';
 import joiErrorHandler from '../middlewares/joi-error-handler.middleware';
