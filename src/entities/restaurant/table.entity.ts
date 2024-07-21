@@ -1,9 +1,10 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, Unique } from 'typeorm';
 import { BaseEntity } from 'entities/base/base.entity';
 import { Restaurant } from 'entities/restaurant/restaurant.entity';
 import { Reservation } from 'entities/restaurant/reservation.entity';
 
 @Entity('tables', { orderBy: { id: 'DESC' } })
+@Unique(['name', 'restaurant'])
 export class Table extends BaseEntity{
 
 	@PrimaryGeneratedColumn({ type: 'int' })
