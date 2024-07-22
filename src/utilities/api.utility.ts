@@ -8,6 +8,7 @@ import { Restaurant } from 'entities/restaurant/restaurant.entity';
 // Interfaces
 import { IPagination } from 'interfaces/common.interface';
 import { Table } from 'entities/restaurant/table.entity';
+import { Reservation } from 'entities/restaurant/reservation.entity';
 
 export default class ApiUtility {
   static getCookieFromRequest(req: Request, key: string) {
@@ -68,6 +69,21 @@ export default class ApiUtility {
     return {
       ...basicTable,
       restaurant: sanitizedRestaurant,
+    };
+  }
+
+  static sanitizeReservation(reservation: Reservation) {
+    const sanitizedData = this.sanitizeData(reservation); 
+
+    const { table, user, ...basicReservation } = sanitizedData;
+
+    const sanitizedTable = this.sanitizeTable(table);
+    const sanitizedUser = this.sanitizeUser(user);
+
+    return {
+      ...basicReservation,
+      table: sanitizedTable,
+      user: sanitizedUser
     };
   }
 
