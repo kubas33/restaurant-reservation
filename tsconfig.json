@@ -11,6 +11,8 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "downlevelIteration": true,
+    "moduleResolution":"node",
+    "resolveJsonModule": true,
     "paths": {
       "entities/*": ["src/entities/*"],
       "utilities/*": ["src/utilities/*"],
@@ -28,7 +30,6 @@
     "lib": [
       "es2015", "es5", "es6", "dom"
     ],
-    "resolveJsonModule": true,
     "types": ["node"]
   },
   "include": [
