@@ -29,6 +29,7 @@ const update: IController = async (req, res) => {
 			id: parseInt(req.params.id, 10),
 			name: req.body.name,
 			seats: parseInt(req.body.seats, 10),
+			restaurantId: parseInt(req.params.restaurantId, 10),
 		}
 		const table = await tableService.update(params);
 		return ApiResponse.result(res, table, httpStatusCodes.OK);

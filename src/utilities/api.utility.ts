@@ -53,17 +53,7 @@ export default class ApiUtility {
     const { restaurant, ...basicTable } = sanitizedData;
 
     // Sanityzacja powiązanej restauracji, jeśli istnieje
-    let sanitizedRestaurant = null;
-    if (restaurant) {
-      const { createdAt, updatedAt, ...basicRestaurant } = restaurant;
-      sanitizedRestaurant = {
-        id: basicRestaurant.id,
-        name: basicRestaurant.name,
-        address: basicRestaurant.address,
-        phone: basicRestaurant.phone,
-        cuisine: basicRestaurant.cuisine,
-      };
-    }
+    const sanitizedRestaurant = restaurant ? this.sanitizeRestaurant(restaurant) : null;
 
     // Zwracanie zsanityzowanych danych stolika z zasanityzowaną restauracją
     return {

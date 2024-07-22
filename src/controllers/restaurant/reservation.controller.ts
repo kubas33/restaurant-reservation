@@ -1,9 +1,9 @@
 import httpStatusCodes from 'http-status-codes';
-import constants from "constants";
-import IController from "interfaces/IController";
-import { ICreateReservation } from "interfaces/reservation.interface";
-import { reservationService } from "services/restaurant/reservation.service";
-import ApiResponse from "utilities/api-response.utility";
+import constants from 'constants';
+import IController from 'interfaces/IController';
+import { ICreateReservation, IUpdateReservation } from 'interfaces/reservation.interface';
+import { reservationService } from 'services/restaurant/reservation.service';
+import ApiResponse from 'utilities/api-response.utility';
 import { IDeleteById } from 'interfaces/common.interface';
 
 const create: IController = async (req, res) => {
@@ -14,7 +14,7 @@ const create: IController = async (req, res) => {
             numberOfGuests: parseInt(req.body.numberOfGuests, 10),
             specialRequests: req.body.specialRequests,
             tableId: parseInt(req.params.tableId, 10),
-            userId: parseInt(req.params.userId, 10),
+            userId: parseInt(req.body.userId, 10),
         }
         const reservation = await reservationService.create(params);
         return ApiResponse.result(res, reservation, httpStatusCodes.CREATED);
@@ -28,14 +28,14 @@ const create: IController = async (req, res) => {
 
 const update: IController = async (req, res) => {
     try {
-        const params: ICreateReservation = {
+        const params: IUpdateReservation = {
             id: parseInt(req.params.id, 10),
             startTime: req.body.startTime,
             endTime: req.body.endTime,
             numberOfGuests: parseInt(req.body.numberOfGuests, 10),
             specialRequests: req.body.specialRequests,
             tableId: parseInt(req.params.tableId, 10),
-            userId: parseInt(req.params.userId, 10),
+            userId: parseInt(req.body.userId, 10),
         }
         const reservation = await reservationService.update(params);
         return ApiResponse.result(res, reservation, httpStatusCodes.OK);
