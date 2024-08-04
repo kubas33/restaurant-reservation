@@ -22,6 +22,9 @@ export class Restaurant extends BaseEntity {
 	@Column({type: 'varchar', length: 100, nullable: true})
 	cuisine: string;
 
+	@Column({ type: 'text', nullable: true })
+	description: string;
+
 	@OneToMany(() => Table, (table) => table.restaurant, {
 		eager: true,
 		cascade: true

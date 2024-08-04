@@ -17,6 +17,11 @@ const validate = (req: Request, res: Response, next: NextFunction) => {
 	next();
 };
 
+router.get(
+	'/',
+	restaurantController.list
+)
+
 router.post(
   '/create',
   restaurantCreateValidation,

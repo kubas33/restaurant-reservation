@@ -5,6 +5,7 @@ export interface ICreateRestaurant {
 	address: string | null;
 	phone: string | null;
 	cuisine: string | null;
+	description: string | null;
 }
 
 export interface IUpdateRestaurant {
@@ -13,8 +14,12 @@ export interface IUpdateRestaurant {
 	address: string | null;
 	phone: string | null;
 	cuisine: string | null;
+	description: string | null;
 }
+
 
 export interface IRestaurantQueryParams extends IBaseQueryParams {
 	keyword?: string;
+	limit: number;
+	page: number;
 }

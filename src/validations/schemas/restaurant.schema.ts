@@ -9,6 +9,8 @@ export const restaurantCreateValidation = [
 		.isLength({ min: 3, max: 20 }).withMessage('Phone must be between 3 and 20 characters'),
 	body('cuisine').optional()
 		.isLength({ min: 3, max: 100 }).withMessage('Cuisine must be between 3 and 100 characters'),
+	body('description').optional()
+		.isLength({ min: 3, max: 255 }).withMessage('Description must be between 3 and 255 characters'),
 ];
 
 export const restaurantUpdateValidation = [
@@ -20,4 +22,6 @@ export const restaurantUpdateValidation = [
 		.isLength({ min: 3, max: 20 }).withMessage('Phone must be between 3 and 20 characters'),
 	body('cuisine').optional()
 		.isLength({ min: 3, max: 100 }).withMessage('Cuisine must be between 3 and 100 characters'),
+	body('description').optional()
+		.isLength({ min: 3, max: 255 }).withMessage('Description must be between 3 and 255 characters'),
 ];

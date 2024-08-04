@@ -1,10 +1,11 @@
 import httpStatusCodes from 'http-status-codes';
 import ApiResponse from 'utilities/api-response.utility';
 import constants from 'constants';
-import { ICreateRestaurant, IUpdateRestaurant } from 'interfaces/restaurant.interface';
+import { ICreateRestaurant, IRestaurantQueryParams, IUpdateRestaurant } from 'interfaces/restaurant.interface';
 import { restaurantService } from 'services/restaurant/restaurant.service';
 import IController from 'interfaces/IController';
 import { IDeleteById } from 'interfaces/common.interface';
+import ApiUtility from 'utilities/api.utility';
 
 const create: IController = async (req, res) => {
 	try {
@@ -54,8 +55,28 @@ const remove: IController = async (req, res) => {
 		return ApiResponse.error(res, httpStatusCodes.BAD_REQUEST);
 	}
 }
+
+const list: IController = async (req, res) => {
+	try {
+		const limit = ApiUtility.getQueryParam(req, 'limit');
+		const page = ApiUtility.getQueryParam(req, 'page');
+		const keyword = ApiUtility.getQueryParam(req, 'keyword');
+		const params: IRestaurantQueryParams =
+			{
+				keyword,
+				limit,
+				page,
+			};
+
+		const restaurants = await restaurantService.list(params);
+		return ApiResponse.result(res, restaurants, httpStatusCodes.OK);
+	} catch (e) {
+		return ApiResponse.error(res, httpStatusCodes.BAD_REQUEST);
+	}
+}
 export const restaurantController = {
 	create,
 	update,
 	remove,
+	list
 }
