@@ -1,10 +1,9 @@
-import constants from '../constants';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
 
 export default class Encryption {
-  static async generateHash(password: string, saltRounds: number): Promise<string> {
+  static async generateHash(password: string, saltRounds: number): Promise<unknown> {
     return new Promise((resolve, reject) => {
       bcrypt.hash(password, saltRounds, (err: any, hash: string) => {
         if (!err) {
@@ -15,7 +14,7 @@ export default class Encryption {
     });
   }
 
-  static async verifyHash(password: string, hash: string): Promise<boolean> {
+  static async verifyHash(password: string, hash: string): Promise<unknown> {
     return new Promise((resolve, reject) => {
       bcrypt.compare(password, hash, (err: any, result: string) => {
         if (result) {
@@ -25,28 +24,7 @@ export default class Encryption {
       });
     });
   }
-
-  static async generateCookie(key: string, value: string) {
-    const data: { [key: string]: string } = {};
-    data[key] = value;
-    return jwt.sign({ data }, constants.APPLICATION.env.authSecret, {
-      expiresIn: constants.APPLICATION.timers.userCookieExpiry,
-    });
-  };
-
-  static async verifyCookie(token: string): Promise<any> {
-    return new Promise((resolve) => {
-      jwt.verify(
-        token,
-        constants.APPLICATION.env.authSecret,
-        (err: Error, decoded: any) => {
-          if (err) {
-            resolve(null);
-          } else {
-            resolve(decoded);
-          }
-        },
-      );
-    });
+  static generateToken(userId) {
+    return jwt.sign({ userId }, process.env.JWT_SECRET as string, { expiresIn: '1d' });
   }
 }

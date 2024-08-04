@@ -13,11 +13,11 @@ import userService from '../../services/user/user.service';
 
 // Utilities
 import ApiResponse from '../../utilities/api-response.utility';
-import Encryption from '../../utilities/encryption.utility';
 import ApiUtility from '../../utilities/api.utility';
 
 // Constants
 import constants from '../../constants';
+import Encryption from 'utilities/encryption.utility';
 
 const create: IController = async (req, res) => {
   try {
@@ -42,9 +42,10 @@ const login: IController = async (req, res) => {
       email: req.body.email,
       password: req.body.password,
     }
+
     const user = await userService.login(params);
-    const cookie = await generateUserCookie(user.id);
-    return ApiResponse.result(res, user, httpStatusCodes.OK, cookie);
+    const token = Encryption.generateToken(user.id);
+    return ApiResponse.result(res, { user, token }, httpStatusCodes.OK);
   } catch (e) {
     if (e instanceof StringError) {
       return ApiResponse.error(res, httpStatusCodes.BAD_REQUEST, e.message);
@@ -53,14 +54,10 @@ const login: IController = async (req, res) => {
   }
 };
 
-const logout: IController = async (req, res) => {
-  res.clearCookie(constants.COOKIE.COOKIE_USER);
-  return ApiResponse.result(res, null, httpStatusCodes.OK);
-};
-
 const me: IController = async (req, res) => {
-  const cookie = await generateUserCookie(req.user.id);
-  return ApiResponse.result(res, req.user, httpStatusCodes.OK, cookie);
+  const token = Encryption.generateToken(req.user.id);
+  const user = await userService.getById({ id: req.user.id });
+  return ApiResponse.result(res, { user, token }, httpStatusCodes.OK);
 };
 
 const detail: IController = async (req, res) => {
@@ -126,17 +123,9 @@ const remove: IController = async (req, res) => {
   }
 };
 
-const generateUserCookie = async (userId: number) => {
-  return {
-    key: constants.COOKIE.COOKIE_USER,
-    value: await Encryption.generateCookie(constants.COOKIE.KEY_USER_ID, userId.toString()),
-  };
-};
-
 export default {
   create,
   login,
-  logout,
   me,
   detail,
   update,
