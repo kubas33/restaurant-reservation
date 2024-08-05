@@ -14,6 +14,7 @@ const create: IController = async (req, res) => {
 			address: req.body.address,
 			phone: req.body.phone,
 			cuisine: req.body.cuisine,
+			description: req.body.description,
 		}
 		const restaurant = await restaurantService.create(params);
 		return ApiResponse.result(res, restaurant, httpStatusCodes.CREATED);
@@ -33,6 +34,7 @@ const update: IController = async (req, res) => {
 			address: req.body.address,
 			phone: req.body.phone,
 			cuisine: req.body.cuisine,
+			description: req.body.description,
 		}
 		const restaurant = await restaurantService.update(params);
 		return ApiResponse.result(res, restaurant, httpStatusCodes.OK);
