@@ -94,10 +94,19 @@ const list = async (params: IRestaurantQueryParams) => {
 	return { response, pagination: { ...pagRes.pagination, totalPages } };
 }
 
+const getById = async (id: number) => {
+	const restaurant = await AppDataSource.getRepository(Restaurant).findOne({ where: { ...where, id } });
+	if (!restaurant) {
+		throw new StringError('Restaurant not found');
+	}
+	return ApiUtility.sanitizeRestaurant(restaurant);
+}
+
 
 export const restaurantService = {
 	create,
 	update,
 	remove,
-	list
+	list,
+	getById
 }

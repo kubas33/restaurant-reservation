@@ -3,11 +3,11 @@ import ApiResponse from 'utilities/api-response.utility';
 import constants from 'constants';
 import { ICreateRestaurant, IRestaurantQueryParams, IUpdateRestaurant } from 'interfaces/restaurant.interface';
 import { restaurantService } from 'services/restaurant/restaurant.service';
-import IController from 'interfaces/IController';
-import { IDeleteById } from 'interfaces/common.interface';
+import IControllerInterface from 'interfaces/IController.interface';
+import { IDeleteById, IDetailById } from 'interfaces/common.interface';
 import ApiUtility from 'utilities/api.utility';
 
-const create: IController = async (req, res) => {
+const create: IControllerInterface = async (req, res) => {
 	try {
 		const params: ICreateRestaurant = {
 			name: req.body.name,
@@ -26,7 +26,7 @@ const create: IController = async (req, res) => {
 	}
 };
 
-const update: IController = async (req, res) => {
+const update: IControllerInterface = async (req, res) => {
 	try {
 		const params: IUpdateRestaurant = {
 			id: parseInt(req.params.id, 10),
@@ -46,7 +46,7 @@ const update: IController = async (req, res) => {
 	}
 };
 
-const remove: IController = async (req, res) => {
+const remove: IControllerInterface = async (req, res) => {
 	try {
 		const params: IDeleteById = {
 			id: parseInt(req.params.id, 10),
@@ -58,7 +58,7 @@ const remove: IController = async (req, res) => {
 	}
 }
 
-const list: IController = async (req, res) => {
+const list: IControllerInterface = async (req, res) => {
 	try {
 		const limit = ApiUtility.getQueryParam(req, 'limit');
 		const page = ApiUtility.getQueryParam(req, 'page');
@@ -76,9 +76,22 @@ const list: IController = async (req, res) => {
 		return ApiResponse.error(res, httpStatusCodes.BAD_REQUEST);
 	}
 }
+
+const getById: IControllerInterface = async (req, res) => {
+	try {
+		const params: IDetailById = {
+			id: parseInt(req.params.id, 10),
+		}
+		const restaurant = await restaurantService.getById(params.id);
+		return ApiResponse.result(res, restaurant, httpStatusCodes.OK);
+	} catch (e) {
+		return ApiResponse.error(res, httpStatusCodes.BAD_REQUEST);
+	}
+}
 export const restaurantController = {
 	create,
 	update,
 	remove,
-	list
+	list,
+	getById
 }

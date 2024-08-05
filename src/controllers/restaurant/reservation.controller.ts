@@ -1,12 +1,12 @@
 import httpStatusCodes from 'http-status-codes';
 import constants from 'constants';
-import IController from 'interfaces/IController';
+import IControllerInterface from 'interfaces/IController.interface';
 import { ICreateReservation, IUpdateReservation } from 'interfaces/reservation.interface';
 import { reservationService } from 'services/restaurant/reservation.service';
 import ApiResponse from 'utilities/api-response.utility';
 import { IDeleteById } from 'interfaces/common.interface';
 
-const create: IController = async (req, res) => {
+const create: IControllerInterface = async (req, res) => {
     try {
         const params: ICreateReservation = {
             startTime: req.body.startTime,
@@ -26,7 +26,7 @@ const create: IController = async (req, res) => {
     }
 };
 
-const update: IController = async (req, res) => {
+const update: IControllerInterface = async (req, res) => {
     try {
         const params: IUpdateReservation = {
             id: parseInt(req.params.id, 10),
@@ -47,7 +47,7 @@ const update: IController = async (req, res) => {
     }
 };  
 
-const remove: IController = async (req, res) => {
+const remove: IControllerInterface = async (req, res) => {
     try {
         const params: IDeleteById = {    
             id: parseInt(req.params.id, 10),

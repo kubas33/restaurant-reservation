@@ -22,6 +22,11 @@ router.get(
 	restaurantController.list
 )
 
+router.get(
+	'/:id',
+	restaurantController.getById
+)
+
 router.post(
   '/create',
   restaurantCreateValidation,

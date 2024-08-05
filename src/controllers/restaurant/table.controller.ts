@@ -3,10 +3,10 @@ import ApiResponse from 'utilities/api-response.utility';
 import constants from 'constants';
 import { ICreateTable, IUpdateTable } from 'interfaces/table.interface';
 import { tableService } from 'services/restaurant/table.service';
-import IController from 'interfaces/IController';
+import IControllerInterface from 'interfaces/IController.interface';
 import { IDeleteById } from 'interfaces/common.interface';
 
-const create: IController = async (req, res) => {
+const create: IControllerInterface = async (req, res) => {
 	try {
 		const params: ICreateTable = {
 			name: req.body.name,
@@ -23,7 +23,7 @@ const create: IController = async (req, res) => {
 	}
 };
 
-const update: IController = async (req, res) => {
+const update: IControllerInterface = async (req, res) => {
 	try {
 		const params: IUpdateTable = {
 			id: parseInt(req.params.id, 10),
@@ -41,7 +41,7 @@ const update: IController = async (req, res) => {
 	}
 };
 
-const remove: IController = async (req, res) => {
+const remove: IControllerInterface = async (req, res) => {
 	try {
 		const params: IDeleteById = {
 			id: parseInt(req.params.id, 10),
