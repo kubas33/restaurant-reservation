@@ -1,7 +1,7 @@
 import httpStatusCodes from 'http-status-codes';
 
 // Interfaces
-import IController from '../../interfaces/IController';
+import IControllerInterface from '@interfaces/IController.interface';
 import { ICreateUser, ILoginUser, IUpdateUser, IUserQueryParams } from 'interfaces/user.interface';
 import { IDeleteById, IDetailById } from 'interfaces/common.interface';
 
@@ -19,7 +19,7 @@ import ApiUtility from '../../utilities/api.utility';
 import constants from '../../constants';
 import Encryption from 'utilities/encryption.utility';
 
-const create: IController = async (req, res) => {
+const create: IControllerInterface = async (req, res) => {
   try {
     const params: ICreateUser = {
       email: req.body.email,
@@ -36,7 +36,7 @@ const create: IController = async (req, res) => {
   }
 };
 
-const login: IController = async (req, res) => {
+const login: IControllerInterface = async (req, res) => {
   try {
     const params: ILoginUser = {
       email: req.body.email,
@@ -54,13 +54,13 @@ const login: IController = async (req, res) => {
   }
 };
 
-const me: IController = async (req, res) => {
+const me: IControllerInterface = async (req, res) => {
   const token = Encryption.generateToken(req.user.id);
   const user = await userService.getById({ id: req.user.id });
   return ApiResponse.result(res, { user, token }, httpStatusCodes.OK);
 };
 
-const detail: IController = async (req, res) => {
+const detail: IControllerInterface = async (req, res) => {
   try {
     const params: IDetailById = {
       id: parseInt(req.params.id, 10),
@@ -72,7 +72,7 @@ const detail: IController = async (req, res) => {
   }
 };
 
-const update: IController = async (req, res) => {
+const update: IControllerInterface = async (req, res) => {
   try {
     const params: IUpdateUser = {
       name: req.body.name,
@@ -85,7 +85,7 @@ const update: IController = async (req, res) => {
   }
 };
 
-const updateMe: IController = async (req, res) => {
+const updateMe: IControllerInterface = async (req, res) => {
   try {
     const params: IUpdateUser = {
       name: req.body.name,
@@ -98,7 +98,7 @@ const updateMe: IController = async (req, res) => {
   }
 };
 
-const list: IController = async (req, res) => {
+const list: IControllerInterface = async (req, res) => {
   try {
     const limit = ApiUtility.getQueryParam(req, 'limit');
     const page = ApiUtility.getQueryParam(req, 'page');
@@ -111,7 +111,7 @@ const list: IController = async (req, res) => {
   }
 };
 
-const remove: IController = async (req, res) => {
+const remove: IControllerInterface = async (req, res) => {
   try {
     const params: IDeleteById = {
       id: parseInt(req.params.id, 10),

@@ -2,7 +2,7 @@ import express from 'express';
 
 // Services
 // Interfaces
-import IRequest from '../interfaces/IRequest';
+import IRequestInterface from '@interfaces/IRequest.interface';
 import constants from 'constants';
 import ApiResponse from 'utilities/api-response.utility';
 import httpStatusCodes from 'http-status-codes';
@@ -13,7 +13,7 @@ import jwt from 'jsonwebtoken';
 // Constants
 
 export default async (
-  req: IRequest,
+  req: IRequestInterface,
   res: express.Response,
   next: express.NextFunction,
 ) => {
