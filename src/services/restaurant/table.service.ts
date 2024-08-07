@@ -4,7 +4,7 @@ import ApiUtility from 'utilities/api.utility';
 import DateTimeUtility from 'utilities/date-time.utility';
 import { ICreateTable, IUpdateTable } from 'interfaces/table.interface';
 import { StringError } from 'errors/string.error';
-import { IDeleteById } from 'interfaces/common.interface';
+import { IDeleteById, IDetailById } from 'interfaces/common.interface';
 import { Restaurant } from 'entities/restaurant/restaurant.entity';
 
 const where = { isDeleted: false };
@@ -74,9 +74,21 @@ const remove  = async (params: IDeleteById) => {
 	});
 }
 
+const getById = async (params: IDetailById) => {
+	try {
+		const data = await AppDataSource.getRepository(Table).findOne({
+			where: { id: params.id }
+		});
+		return ApiUtility.sanitizeTable(data);
+	} catch (e) {
+		return null;
+	}
+};
+
 
 export const tableService = {
 	create,
 	update,
-	remove
+	remove,
+	getById
 }

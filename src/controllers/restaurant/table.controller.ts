@@ -4,7 +4,7 @@ import constants from 'constants';
 import { ICreateTable, IUpdateTable } from 'interfaces/table.interface';
 import { tableService } from 'services/restaurant/table.service';
 import IControllerInterface from 'interfaces/IController.interface';
-import { IDeleteById } from 'interfaces/common.interface';
+import { IDeleteById, IDetailById } from 'interfaces/common.interface';
 
 const create: IControllerInterface = async (req, res) => {
 	try {
@@ -52,8 +52,21 @@ const remove: IControllerInterface = async (req, res) => {
 		return ApiResponse.error(res, httpStatusCodes.BAD_REQUEST, e.message);
 	}
 }
+
+const getById: IControllerInterface = async (req, res) => {
+	try {
+		const params: IDetailById = {
+			id: parseInt(req.params.id, 10),
+		}
+		const table = await tableService.getById(params);
+		return ApiResponse.result(res, table, httpStatusCodes.OK);
+	} catch (e) {
+		return ApiResponse.error(res, httpStatusCodes.BAD_REQUEST, e.message);
+	}
+}
 export const tableController = {
 	create,
 	update,
 	remove,
+	getById
 }

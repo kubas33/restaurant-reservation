@@ -53,6 +53,16 @@ router.post(
 	tableController.create,
 );
 
+router.get(
+	'/:restaurantId/tables',
+	restaurantController.getRestaurantTables
+);
+
+router.get(
+	'/:restaurantId/table/:id',
+	tableController.getById,
+);
+
 router.put(
 	'/:restaurantId/table/update/:id',
 	tableUpdateValidation,
@@ -72,6 +82,7 @@ router.post(
 	reservationController.create,
 );
 
+
 router.put(
 	'/:restaurantId/table/:tableId/reservation/update/:id',
 	reservationUpdateValidation,
@@ -84,9 +95,5 @@ router.delete(
 	reservationController.remove,
 );
 
-router.get(
-	'/:restaurantId/tables',
-	restaurantController.getRestaurantTables
-)
 
 export default router
