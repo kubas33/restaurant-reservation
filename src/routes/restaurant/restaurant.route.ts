@@ -84,4 +84,9 @@ router.delete(
 	reservationController.remove,
 );
 
+router.get(
+	'/:restaurantId/tables',
+	restaurantController.getRestaurantTables
+)
+
 export default router

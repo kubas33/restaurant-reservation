@@ -88,10 +88,23 @@ const getById: IControllerInterface = async (req, res) => {
 		return ApiResponse.error(res, httpStatusCodes.BAD_REQUEST);
 	}
 }
+
+const getRestaurantTables: IControllerInterface = async (req, res) => {
+	try {
+		const params: IDetailById = {
+			id: parseInt(req.params.id, 10),
+		}
+		const tables = await restaurantService.getRestaurantTables(params.id);
+		return ApiResponse.result(res, tables, httpStatusCodes.OK);
+	} catch (e) {
+		return ApiResponse.error(res, httpStatusCodes.BAD_REQUEST);
+	}
+}
 export const restaurantController = {
 	create,
 	update,
 	remove,
 	list,
-	getById
+	getById,
+	getRestaurantTables
 }
