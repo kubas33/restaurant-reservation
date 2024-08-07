@@ -5,6 +5,7 @@ import DateTimeUtility from 'utilities/date-time.utility';
 import { ICreateRestaurant, IRestaurantQueryParams, IUpdateRestaurant } from 'interfaces/restaurant.interface';
 import { StringError } from 'errors/string.error';
 import { IDeleteById } from 'interfaces/common.interface';
+import { Brackets } from 'typeorm';
 
 const where = { isDeleted: false };
 
@@ -70,11 +71,17 @@ const remove  = async (params: IDeleteById) => {
 }
 
 const list = async (params: IRestaurantQueryParams) => {
-	let restaurantRepo = AppDataSource.getRepository(Restaurant).createQueryBuilder('restaurant');
-	restaurantRepo = restaurantRepo.where('restaurant.isDeleted = :isDeleted', { isDeleted: false });
+	let restaurantRepo = AppDataSource.getRepository(Restaurant)
+		.createQueryBuilder('restaurant')
+		.leftJoinAndSelect('restaurant.tables', 'tables')
+		.leftJoinAndSelect('tables.reservations', 'reservations')
+		.where('restaurant.isDeleted = :isDeleted', { isDeleted: false });
 
 	if (params.keyword) {
-		restaurantRepo = restaurantRepo.andWhere('restaurant.name LIKE :name', { name: `%${params.keyword}%` });
+		restaurantRepo = restaurantRepo.andWhere(new Brackets(qb => {
+			qb.where('restaurant.name LIKE :keyword', { keyword: `%${params.keyword}%` })
+				.orWhere('restaurant.cuisine LIKE :keyword', { keyword: `%${params.keyword}%` });
+		}));
 	}
 
 	// Pagination
@@ -102,11 +109,21 @@ const getById = async (id: number) => {
 	return ApiUtility.sanitizeRestaurant(restaurant);
 }
 
+const getRestaurantTables = async (id: number) => {
+	const restaurant = await AppDataSource.getRepository(Restaurant).findOne({ where: { ...where, id } });
+	if (!restaurant) {
+		throw new StringError('Restaurant not found');
+	}
+
+	return restaurant.tables.map(table => ApiUtility.sanitizeTable(table));
+}
+
 
 export const restaurantService = {
 	create,
 	update,
 	remove,
 	list,
-	getById
+	getById,
+	getRestaurantTables
 }
