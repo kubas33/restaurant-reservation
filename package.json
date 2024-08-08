@@ -7,8 +7,6 @@
   "author": "kubas33 <44829224+kubas33@users.noreply.github.com>",
   "license": "MIT",
   "scripts": {
-    "dev2": "ts-node-dev --trace-warnings --loader ts-node/esm -r tsconfig-paths/register src/index.ts",
-    "dev3": "node --watch -r ts-node/register -r tsconfig-paths/register src/index.ts",
     "dev": "tsx --watch -r ts-node/register -r tsconfig-paths/register src/index.ts",
     "build": "tsc",
     "start": "node dist/index.js",
