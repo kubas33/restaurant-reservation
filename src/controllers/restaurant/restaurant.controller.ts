@@ -6,6 +6,7 @@ import { restaurantService } from 'services/restaurant/restaurant.service';
 import IControllerInterface from 'interfaces/IController.interface';
 import { IDeleteById, IDetailById } from 'interfaces/common.interface';
 import ApiUtility from 'utilities/api.utility';
+import { logger } from 'configs/logger.config';
 
 const create: IControllerInterface = async (req, res) => {
 	try {
@@ -91,15 +92,21 @@ const getById: IControllerInterface = async (req, res) => {
 
 const getRestaurantTables: IControllerInterface = async (req, res) => {
 	try {
+		logger.info(req.params);
 		const params: IDetailById = {
-			id: parseInt(req.params.id, 10),
-		}
-		const tables = await restaurantService.getRestaurantTables(params.id);
-		return ApiResponse.result(res, tables, httpStatusCodes.OK);
+			id: parseInt(req.params.restaurantId, 10),
+		};
+
+		// Pobieramy dane restauracji i stolików
+		const { restaurant, tables } = await restaurantService.getRestaurantTables(params.id);
+
+		// Zwracamy dane w odpowiedzi
+		return ApiResponse.result(res, { restaurant, tables }, httpStatusCodes.OK);
 	} catch (e) {
-		return ApiResponse.error(res, httpStatusCodes.BAD_REQUEST);
+		logger.error(e);
+		return ApiResponse.error(res, httpStatusCodes.BAD_REQUEST, 'Failed to fetch restaurant tables');
 	}
-}
+};
 export const restaurantController = {
 	create,
 	update,

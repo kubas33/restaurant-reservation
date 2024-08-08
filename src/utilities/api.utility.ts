@@ -31,7 +31,7 @@ export default class ApiUtility {
   }
 
   static sanitizeData(data: BaseEntity) {
-    const { createdAt, updatedAt, isDeleted, deletedAt, ...basicData } = data;
+    const { isDeleted, deletedAt, ...basicData } = data;
     return basicData;
   }
 
@@ -45,12 +45,18 @@ export default class ApiUtility {
     return basicRestaurant;
   }
 
+  static simpleRestaurant(restaurant: Restaurant) {
+    const sanitizedData = this.sanitizeRestaurant(restaurant);
+    const { createdAt, updatedAt, tables, ...simpleRestaurant } = sanitizedData;
+    return simpleRestaurant;
+  }
+
   static sanitizeTable(table: Table) {
     // Sanityzacja podstawowych danych stolika
     const sanitizedData = this.sanitizeData(table);
 
     // Destrukturyzacja sanitizedData, aby usunąć pole 'restaurant'
-    const { restaurant, ...basicTable } = sanitizedData;
+    const { restaurant, ...basicTable } = table;
 
     // Sanityzacja powiązanej restauracji, jeśli istnieje
     const sanitizedRestaurant = restaurant ? this.sanitizeRestaurant(restaurant) : null;

@@ -110,13 +110,27 @@ const getById = async (id: number) => {
 }
 
 const getRestaurantTables = async (id: number) => {
-	const restaurant = await AppDataSource.getRepository(Restaurant).findOne({ where: { ...where, id } });
+	const restaurant = await AppDataSource.getRepository(Restaurant).findOne({
+		where: { id },
+		relations: ['tables'], // Pobieramy również powiązane stoliki
+	});
+
 	if (!restaurant) {
 		throw new StringError('Restaurant not found');
 	}
 
-	return restaurant.tables.map(table => ApiUtility.sanitizeTable(table));
-}
+	// Zsanityzowane dane restauracji
+	const simpleRestaurant = ApiUtility.simpleRestaurant(restaurant);
+
+	// Zsanityzowane stoliki
+	const sanitizedTables = restaurant.tables.map(table => ApiUtility.sanitizeTable(table));
+
+	// Zwracamy zarówno zsanityzowaną restaurację, jak i stoliki
+	return {
+		restaurant: simpleRestaurant,
+		tables: sanitizedTables,
+	};
+};
 
 
 export const restaurantService = {
