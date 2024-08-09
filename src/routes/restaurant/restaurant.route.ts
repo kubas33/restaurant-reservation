@@ -67,7 +67,7 @@ router.put(
 	'/:restaurantId/table/update/:id',
 	tableUpdateValidation,
 	validate,
-	tableController.create,
+	tableController.update,
 );
 
 router.delete(
