@@ -91,6 +91,7 @@ const update = async (params: IUpdateUser) => {
 
   return await AppDataSource.getRepository(User).update(query, {
     name: params.name,
+    email: params.email,
     updatedAt: DateTimeUtility.getCurrentTimeStamp(),
   });
 }
@@ -101,10 +102,12 @@ const list = async (params: IUserQueryParams) => {
 
   if (params.keyword) {
     userRepo = userRepo.andWhere(
-      '(LOWER(user.name) LIKE LOWER(:keyword)',
-      { keyword: `%${params.keyword}%` },
+       'LOWER(user.name) LIKE LOWER(:keyword)',
+       { keyword: `%${params.keyword}%` },
     );
   }
+
+  userRepo = userRepo.orderBy('user.id', 'ASC');
 
   // Pagination
   const paginationRepo = userRepo;

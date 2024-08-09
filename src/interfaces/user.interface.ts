@@ -15,6 +15,7 @@ export interface ILoginUser {
 export interface IUpdateUser {
   id: number;
   name: string;
+  email: string;
 }
 
 export interface IUserQueryParams extends IBaseQueryParams {

@@ -76,6 +76,7 @@ const update: IControllerInterface = async (req, res) => {
   try {
     const params: IUpdateUser = {
       name: req.body.name,
+      email: req.body.email,
       id: parseInt(req.params.id, 10),
     }
     await userService.update(params);
