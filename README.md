@@ -38,7 +38,8 @@ To API zostało zbudowane z użyciem Express.js, TypeORM i SQL i obsługuje peł
    ```bash
     yarn install
 4. Uruchom migracje TypeORM, aby utworzyć niezbędne tabele:
-   yarn typeorm migration:run
+   ```bash
+    yarn typeorm migration:run
 5. Uruchom seed:
     ```bash
    yarn typeorm seed:run
