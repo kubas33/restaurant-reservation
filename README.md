@@ -1,29 +1,47 @@
-# NodeJS Sample
-#### ExpressJS, Typescript, TypeORM, MySQL
+# API do Zarządzania Restauracjami
 
-## 1. Running project
-### Stable environment
+## Opis
 
-1. Node version: ```14.0.0```
-2. Yarn version: ```1.22.4```
-3. NPM version: ```6.14.5```
-4. MySQL version: ```8.0.21```
+To API zostało zbudowane z użyciem Express.js, TypeORM i SQL i obsługuje pełny CRUD (Create, Read, Update, Delete) dla restauracji, stolików oraz rezerwacji stolików. API jest częścią aplikacji do zarządzania restauracjami, pozwalając na tworzenie, edytowanie, usuwanie i przeglądanie danych.
 
-#### 1.1. Setup
-1. Install packages
+## Działające funkcjonalności
 
-```$ yarn``` or ```$ yarn install```
+- **Restauracje:**
+    - Dodawanie nowej restauracji.
+    - Pobieranie listy restauracji.
+    - Aktualizacja istniejącej restauracji.
+    - Usuwanie restauracji.
 
-2. Create .env file in the root folder and update some variables
-```
-DB_HOST={your_host}
-DB_USER={your_user}
-DB_PASSWORD={your_password}
-DB_NAME={your_db}
-PORT={your_running_port}
-NODE_ENV=local
-TOKEN_SECRET_KEY=test
-```
+- **Stoliki:**
+    - Dodawanie nowego stolika.
+    - Pobieranie listy stolików w danej restauracji.
+    - Aktualizacja istniejącego stolika.
+    - Usuwanie stolika.
 
-#### 1.2. Running
-```$ yarn dev``` or ```$ npm run dev```
+- **Rezerwacje:**
+    - Tworzenie nowej rezerwacji dla stolika.
+    - Pobieranie listy rezerwacji dla danej restauracji i stolika.
+    - Aktualizacja rezerwacji.
+    - Anulowanie (usuwanie) rezerwacji.
+
+## Instalacja
+
+1. Sklonuj repozytorium:
+
+   ```bash
+   git clone https://github.com/kubas33/restaurant-reservation.git
+   
+2. Przejdź do katalogu projektu:
+    ```bash
+   cd restaurant-reservation
+3. Zainstaluj zależności: 
+   ```bash
+    yarn install
+4. Uruchom migracje TypeORM, aby utworzyć niezbędne tabele:
+   yarn typeorm migration:run
+5. Uruchom seed:
+    ```bash
+   yarn typeorm seed:run
+6. Uruchom aplikację:
+   ```bash
+    yarn dev
